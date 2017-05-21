@@ -1,8 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Vehicle Detection Project**
 
 The goals / steps of this project are the following:
@@ -14,46 +9,35 @@ The goals / steps of this project are the following:
 * Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
 * Estimate a bounding box for vehicles detected.
 
-[//]: # (Image References)
-[image1]: ./examples/car_not_car.png
-[image2]: ./examples/HOG_example.jpg
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
-[image6]: ./examples/labels_map.png
-[image7]: ./examples/output_bboxes.png
-[video1]: ./project_video.mp4
-
-## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
-###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
----
-###Writeup / README
-
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
 
 ###Histogram of Oriented Gradients (HOG)
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The code for this step is in the second section in the cell number 6. In cell number 7 there is an example of the use and the ouput image, also attached here:  
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+![hog feature](./examples/hog_feature.png)
 
-![alt text][image1]
+In the final solution I will use `HLS` as color space, and use all the channels to get the HOG features.
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+The data for the `vehicle` and `non_vehicle` images have been downloaded from the lesson data. In the utils section there is a function who reads both type of images and return two arrays with the two groups. 
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
-
-
-![alt text][image2]
+The method `get_hot_features` can have two possible outputs, depending on the input argument `vis`, that basically indicates if we can also get an output image for the HOG visualization. We will pass `true` just for the test and keep the value to `false` in other case.
+During the realization of the project I used different values for `orientations`, `pixels_per_cell` and `cells_per_block`, and finally choose `12`, `4` and `2` respectively. 
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+The only way I had to check how the HOG parameters affect my choice was testing in my classifier. 
+As mentioned before, I read the image data and used to get the HOG features for `vehicles` and `non_vehicles` images.
+After several tweaking and testing different options, I got the best results with the following values:
+
+`color space` -> HLS
+`orientations` -> 12
+`pixels_per_cell` -> 4
+`cells_per_block` -> 2
+`hog_channel` -> ALL
+
+Increasing the orientation, using all the channels from the image to get the features, together with smaller blocks and less pixels for cell, made the process of getting the vector features considerably slow in my laptop, but got the best prediction with this values
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
