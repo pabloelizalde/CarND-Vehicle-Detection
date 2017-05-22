@@ -61,6 +61,8 @@ Following the same approach than in the lesson. I started with a basic sliding w
 ![overlap test 1](./output_images/overlap75.png)
 ![overlap test 2](./output_images/overlap50.png)
 
+About the scaling, when trying with a smaller value, like 1.2, having the overlap of 75%, sometime I was getting two different positives for the same car. While doing this value bigger, like 1.7, made in the video that the bounding boxes were not being drawn (found) in several of the frames. The best value together with the 75% overlap is 1.5.
+
 Also I restrict the search to a certain y-values of the image, since most of the upper part of the image is not interesting for vehicle detection. 
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
@@ -120,5 +122,6 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+Somehow with the white vehicle the output is not as good as with the dark color car. This could be due to the data that has been used to train the classifier. My next step would be to check the data, and perhaps improve the way I am obtaining the features to train the classifier. 
+Also in the video the bounding boxes drawn in the pictures are not very stable and change in size in a not very soft way. I would like somehow to average the sizes of the bounding boxes in the different frames to create a more smooth output.   
 
